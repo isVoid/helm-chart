@@ -2,12 +2,12 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ template "dask.fullname" . }}-jupyter-config
+  name: {{ template "rapids.fullname" . }}-jupyter-config
   labels:
-    app: {{ template "dask.name" . }}
+    app: {{ template "rapids.name" . }}
     heritage: {{ .Release.Service | quote }}
     release: {{ .Release.Name | quote }}
-    chart: {{ template "dask.chart" . }}
+    chart: {{ template "rapids.chart" . }}
     component: jupyter
 data:
   jupyter_notebook_config.py: |

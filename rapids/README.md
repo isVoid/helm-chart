@@ -27,7 +27,8 @@ The following services will be created:
 
 Note that no `Ingress` is created.
 Custom `Ingress` may be configured to redirect traffic to jupyter notebook,
-dask dashboard, webui and pod-monitors (if setup). See more at [dask/helm-chart](https://github.com/dask/helm-chart).
+dask dashboard, webui and pod-monitors (if setup).
+See more at [dask/helm-chart](https://github.com/dask/helm-chart).
 
 For this guide, we will setup port forwarding to jupyter notebook via port forwarding.
 
@@ -37,9 +38,9 @@ First, setup port forwarding from the cluster to external port:
 
 ```bash
 # For Jupyter notebook
-kubectl port-forward --address 127.0.0.1 service/rapids-release-dask-jupyter 8888:80
+kubectl port-forward --address 127.0.0.1 service/rapids-release-dask-jupyter 8888:80 &
 # For Dask scheduler
-kubectl port-forward --address 127.0.0.1 service/rapids-release-dask-scheduler 8889:80
+kubectl port-forward --address 127.0.0.1 service/rapids-release-dask-scheduler 8889:80 &
 ```
 
 For users accessing the notebooks from remote machine,
@@ -47,6 +48,7 @@ ssh-tunneling is required.
 Otherwise,
 open a browser and access `localhost:8888` for jupyter notebook,
 and `localhost:8889` for dask dashboard.
+Default password for the notebook is `rapids`.
 
 ### Notebooks and Cluster Scaling
 
@@ -72,6 +74,8 @@ client = Client(<your-scheduler-ip-address:8786>)
 client
 ```
 
+![dask worker](_assets/daskworker.PNG)
+
 By default,
 we can see 3 workers are scheduled.
 Each has 1 GPU assigned.
@@ -80,7 +84,7 @@ you may scale up the cluster either via `kubectl` or via `helm upgrade`.
 
 #### via `kubectl`
 ```bash
-kubectl scale deployment rapids-release-dask-scheduler --replica=8
+kubectl scale deployment rapids-release-worker --replicas=8
 ```
 
 #### via `helm upgrade`
@@ -88,3 +92,5 @@ Modify `worker.replicas` in `values.yaml` to 8, then run
 ```bash
 helm upgrade rapids-release rapids/
 ```
+
+![dask worker](_assets/eightworkers.PNG)

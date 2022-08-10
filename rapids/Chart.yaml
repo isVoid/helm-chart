@@ -1,19 +1,11 @@
 ---
 apiVersion: v1
-name: dask
+name: rapids
 version: 0.0.1-set.by.chartpress
-appVersion: "2022.6.1"
-description: Distributed computation in Python with task scheduling
-home: https://dask.org
-icon: https://avatars3.githubusercontent.com/u/17131925?v=3&s=200
+appVersion: "22.08"
+description: GPU accelerated scalable data science framework.
+home: https://rapids.ai
+icon:
 sources:
-  - https://github.com/dask/dask
+  - https://github.com/rapidsai
 maintainers:
-  - name: danielfrg
-    email: df.rodriguez143@gmail.com
-  - name: mrocklin
-    email: mrocklin@gmail.com
-  - name: beberg
-    email: beberg@gmail.com
-  - name: jacobtomlinson
-    email: jacob@tomlinson.email

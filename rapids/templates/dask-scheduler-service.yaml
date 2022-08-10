@@ -2,12 +2,12 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ template "dask.fullname" . }}-scheduler
+  name: {{ template "rapids.fullname" . }}-scheduler
   labels:
-    app: {{ template "dask.name" . }}
+    app: {{ template "rapids.name" . }}
     heritage: {{ .Release.Service | quote }}
     release: {{ .Release.Name | quote }}
-    chart: {{ template "dask.chart" . }}
+    chart: {{ template "rapids.chart" . }}
     component: scheduler
   {{- with .Values.scheduler.serviceAnnotations }}
   annotations:
@@ -15,14 +15,14 @@ metadata:
   {{- end }}
 spec:
   ports:
-    - name: {{ template "dask.fullname" . }}-scheduler
+    - name: {{ template "rapids.fullname" . }}-scheduler
       port: {{ .Values.scheduler.servicePort }}
       targetPort: 8786
-    - name: {{ template "dask.fullname" . }}-webui
+    - name: {{ template "rapids.fullname" . }}-webui
       port: {{ .Values.webUI.servicePort }}
       targetPort: 8787
   selector:
-    app: {{ template "dask.name" . }}
+    app: {{ template "rapids.name" . }}
     release: {{ .Release.Name | quote }}
     component: scheduler
   type: {{ .Values.scheduler.serviceType }}

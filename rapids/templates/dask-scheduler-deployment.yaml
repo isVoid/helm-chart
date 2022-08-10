@@ -2,18 +2,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ template "dask.fullname" . }}-scheduler
+  name: {{ template "rapids.fullname" . }}-scheduler
   labels:
-    app: {{ template "dask.name" . }}
+    app: {{ template "rapids.name" . }}
     heritage: {{ .Release.Service | quote }}
     release: {{ .Release.Name | quote }}
-    chart: {{ template "dask.chart" . }}
+    chart: {{ template "rapids.chart" . }}
     component: scheduler
 spec:
   replicas: {{ .Values.scheduler.replicas }}
   selector:
     matchLabels:
-      app: {{ template "dask.name" . }}
+      app: {{ template "rapids.name" . }}
       release: {{ .Release.Name | quote }}
       component: scheduler
   strategy:
@@ -21,7 +21,7 @@ spec:
   template:
     metadata:
       labels:
-        app: {{ template "dask.name" . }}
+        app: {{ template "rapids.name" . }}
         release: {{ .Release.Name | quote }}
         component: scheduler
     spec:
@@ -30,7 +30,7 @@ spec:
         {{- . | toYaml | nindent 8 }}
       {{- end }}
       containers:
-        - name: {{ template "dask.fullname" . }}-scheduler
+        - name: {{ template "rapids.fullname" . }}-scheduler
           image: "{{ .Values.scheduler.image.repository }}:{{ .Values.scheduler.image.tag }}"
           {{- with .Values.scheduler.image.pullPolicy }}
           imagePullPolicy: {{ . }}

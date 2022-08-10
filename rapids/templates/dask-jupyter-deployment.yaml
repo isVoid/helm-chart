@@ -2,18 +2,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ template "dask.fullname" . }}-jupyter
+  name: {{ template "rapids.fullname" . }}-jupyter
   labels:
-    app: {{ template "dask.name" . }}
+    app: {{ template "rapids.name" . }}
     heritage: {{ .Release.Service | quote }}
     release: {{ .Release.Name | quote }}
-    chart: {{ template "dask.chart" . }}
+    chart: {{ template "rapids.chart" . }}
     component: jupyter
 spec:
   replicas: {{ .Values.jupyter.replicas }}
   selector:
     matchLabels:
-      app: {{ template "dask.name" . }}
+      app: {{ template "rapids.name" . }}
       release: {{ .Release.Name | quote }}
       component: jupyter
   strategy:
@@ -21,7 +21,7 @@ spec:
   template:
     metadata:
       labels:
-        app: {{ template "dask.name" . }}
+        app: {{ template "rapids.name" . }}
         release: {{ .Release.Name | quote }}
         component: jupyter
     spec:
@@ -30,7 +30,7 @@ spec:
         {{- . | toYaml | nindent 8 }}
       {{- end }}
       containers:
-        - name: {{ template "dask.fullname" . }}-jupyter
+        - name: {{ template "rapids.fullname" . }}-jupyter
           image: "{{ .Values.jupyter.image.repository }}:{{ .Values.jupyter.image.tag }}"
           {{- with .Values.jupyter.image.pullPolicy }}
           imagePullPolicy: {{ . }}
@@ -55,7 +55,7 @@ spec:
               {{- end }}
           env:
             - name: DASK_SCHEDULER_ADDRESS
-              value: {{ template "dask.fullname" . }}-scheduler:{{ .Values.scheduler.servicePort }}
+              value: {{ template "rapids.fullname" . }}-scheduler:{{ .Values.scheduler.servicePort }}
             {{- with .Values.jupyter.env }}
             {{- . | toYaml | nindent 12 }}
             {{- end }}
@@ -65,7 +65,7 @@ spec:
         {{- end }}
         - name: config-volume
           configMap:
-            name: {{ template "dask.fullname" . }}-jupyter-config
+            name: {{ template "rapids.fullname" . }}-jupyter-config
       {{- with .Values.jupyter.nodeSelector }}
       nodeSelector:
         {{- . | toYaml | nindent 8 }}
