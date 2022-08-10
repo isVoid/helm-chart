@@ -2,12 +2,14 @@
 # nameOverride: dask
 # fullnameOverride: dask
 
+# {{$rapids-runtime-image := rapidsai/rapidsai-core:22.06-cuda11.5-runtime-ubuntu20.04-py3.9}}
+
 scheduler:
   name: scheduler # Dask scheduler name.
   enabled: true # Enable/disable scheduler.
   image:
-    repository: "ghcr.io/dask/dask" # Container image repository.
-    tag: "2022.6.1" # Container image tag.
+    repository: "rapidsai/rapidsai-core" # Container image repository.
+    tag: "22.06-cuda11.5-runtime-ubuntu20.04-py3.9" # Container image tag.
     pullPolicy: IfNotPresent # Container image pull policy.
     pullSecrets: # Container image [pull secrets](https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/).
     #  - name: regcred
@@ -34,6 +36,9 @@ scheduler:
   nodeSelector: {} # Node Selector.
   securityContext: {} # Security Context.
   # serviceAccountName: ""
+  env:
+  - name: DISABLE_JUPYTER
+    value: "true"
   metrics:
     enabled: false # Enable scheduler metrics. Pip package [prometheus-client](https://pypi.org/project/prometheus-client/) should be present on scheduler.
     serviceMonitor:
@@ -69,8 +74,8 @@ webUI:
 worker:
   name: worker # Dask worker name.
   image:
-    repository: "ghcr.io/dask/dask" # Container image repository.
-    tag: "2022.6.1" # Container image tag.
+    repository: "rapidsai/rapidsai-core" # Container image repository.
+    tag: "22.06-cuda11.5-runtime-ubuntu20.04-py3.9" # Container image tag.
     pullPolicy: IfNotPresent # Container image pull policy.
     dask_worker: "dask-worker" # Dask worker command. E.g `dask-cuda-worker` for GPU worker.
     pullSecrets: # Container image [pull secrets](https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/).
@@ -83,6 +88,8 @@ worker:
     cpu: 1 # Default CPU (DEPRECATED use `resources`).
     memory: "4GiB" # Default memory (DEPRECATED use `resources`).
   env: # Environment variables. See `values.yaml` for example values.
+  - name: DISABLE_JUPYTER
+    value: "true"
   #  - name: EXTRA_APT_PACKAGES
   #    value: build-essential openssl
   #  - name: EXTRA_CONDA_PACKAGES
@@ -155,8 +162,8 @@ jupyter:
   enabled: true # Enable/disable the bundled Jupyter notebook.
   rbac: true # Create RBAC service account and role to allow Jupyter pod to scale worker pods and access logs.
   image:
-    repository: "ghcr.io/dask/dask-notebook" # Container image repository.
-    tag: "2022.6.1" # Container image tag.
+    repository: "rapidsai/rapidsai-core" # Container image repository.
+    tag: "22.06-cuda11.5-runtime-ubuntu20.04-py3.9" # Container image tag.
     pullPolicy: IfNotPresent # Container image pull policy.
     pullSecrets: # Container image [pull secrets](https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/).
     #  - name: regcred
